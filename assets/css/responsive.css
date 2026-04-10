@@ -1,0 +1,350 @@
+/* ============================================================
+   TradeFi - Responsive Stylesheet
+   ============================================================ */
+
+/* ============================================================
+   BREAKPOINTS
+   Mobile:  < 768px
+   Tablet:  768px – 1024px
+   Desktop: > 1024px
+   ============================================================ */
+
+/* ============================================================
+   TABLET (768px – 1024px)
+   ============================================================ */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-content {
+    padding: var(--spacing-5);
+  }
+
+  .welcome-banner {
+    padding: var(--spacing-5) var(--spacing-6);
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============================================================
+   MOBILE (< 768px)
+   ============================================================ */
+@media (max-width: 767px) {
+
+  /* ---- Sidebar ---- */
+  .sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-width) !important;
+    z-index: 150;
+    top: 0;
+    padding-top: var(--topnav-height);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .sidebar-overlay {
+    z-index: 140;
+  }
+
+  /* ---- Main Content ---- */
+  .main-content {
+    margin-left: 0 !important;
+    padding: var(--spacing-4);
+  }
+
+  /* ---- Top Nav ---- */
+  .topnav {
+    padding: 0 var(--spacing-4);
+    left: 0 !important;
+  }
+
+  .user-info {
+    display: none;
+  }
+
+  /* ---- Grids ---- */
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Page Header ---- */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+  }
+
+  .page-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  /* ---- Filter Bar ---- */
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-bar .search-wrapper {
+    width: 100%;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
+
+  /* ---- Cards ---- */
+  .card-header {
+    padding: var(--spacing-4);
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+  }
+
+  .card-body {
+    padding: var(--spacing-4);
+  }
+
+  .card-footer {
+    padding: var(--spacing-3) var(--spacing-4);
+    flex-wrap: wrap;
+  }
+
+  /* ---- Metric Cards ---- */
+  .metric-card {
+    padding: var(--spacing-4);
+  }
+
+  .metric-value {
+    font-size: var(--font-size-xl);
+  }
+
+  /* ---- Welcome Banner ---- */
+  .welcome-banner {
+    padding: var(--spacing-5);
+    border-radius: var(--radius-lg);
+  }
+
+  .welcome-banner h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .welcome-banner .welcome-actions {
+    flex-direction: column;
+    gap: var(--spacing-2);
+  }
+
+  .welcome-banner .welcome-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ---- Tables ---- */
+  .table-wrapper {
+    border-radius: var(--radius);
+  }
+
+  .data-table thead th,
+  .data-table tbody td {
+    padding: 10px 12px;
+  }
+
+  /* ---- Modals ---- */
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-dialog {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 92vh;
+    width: 100%;
+    max-width: 100%;
+    animation: slideUpMobile 0.3s ease;
+  }
+
+  @keyframes slideUpMobile {
+    from { opacity: 0; transform: translateY(100%); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-header {
+    padding: var(--spacing-4) var(--spacing-5);
+  }
+
+  .modal-body {
+    padding: var(--spacing-4) var(--spacing-5);
+  }
+
+  .modal-footer {
+    padding: var(--spacing-3) var(--spacing-5);
+  }
+
+  /* ---- Form Rows ---- */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Info Grid ---- */
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Settings ---- */
+  .settings-section-body {
+    padding: var(--spacing-4);
+  }
+
+  /* ---- Toast ---- */
+  .toast-container {
+    left: var(--spacing-4);
+    right: var(--spacing-4);
+    bottom: var(--spacing-4);
+    max-width: 100%;
+  }
+
+  .toast {
+    min-width: unset;
+  }
+
+  /* ---- Pagination ---- */
+  .pagination {
+    flex-direction: column;
+    gap: var(--spacing-3);
+    align-items: center;
+    padding: var(--spacing-4);
+  }
+
+  /* ---- Page specific: Reports ---- */
+  .stat-card-value {
+    font-size: var(--font-size-xl);
+  }
+
+  /* ---- Quick Actions ---- */
+  .quick-action-card {
+    padding: var(--spacing-4);
+  }
+
+  /* ---- Section Header ---- */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+  }
+
+  /* ---- Table action buttons ---- */
+  .table-actions {
+    gap: 4px;
+  }
+
+  /* ---- Breadcrumb ---- */
+  .breadcrumb {
+    font-size: var(--font-size-xs);
+  }
+
+  /* ---- Typography ---- */
+  .page-header-left h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  /* ---- Hide desktop-only elements ---- */
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   SMALL MOBILE (< 480px)
+   ============================================================ */
+@media (max-width: 479px) {
+  :root {
+    --topnav-height: 56px;
+  }
+
+  .topnav {
+    padding: 0 var(--spacing-3);
+  }
+
+  .topnav-brand span {
+    display: none;
+  }
+
+  .btn {
+    padding: 9px 14px;
+  }
+
+  .btn-lg {
+    padding: 11px 20px;
+    font-size: var(--font-size-sm);
+  }
+
+  .metric-card {
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+
+  .metric-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ============================================================
+   LARGE DESKTOP (> 1440px)
+   ============================================================ */
+@media (min-width: 1440px) {
+  .main-content {
+    padding: var(--spacing-8);
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  .sidebar,
+  .topnav,
+  .toast-container,
+  .modal-backdrop {
+    display: none !important;
+  }
+
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
