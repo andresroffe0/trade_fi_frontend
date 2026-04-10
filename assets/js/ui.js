@@ -1,10 +1,25 @@
 /* ============================================================
    TradeFi - UI Module
+   ============================================================
+   Propósito: Componentes dinámicos de interfaz reutilizables en
+   todas las páginas: notificaciones toast, modales, tablas,
+   paginación, dropdowns y diálogos de confirmación.
+
+   No contiene lógica de negocio; solo manipulación del DOM.
+   Ver docs/ARCHITECTURE.md §4.4 para ejemplos de uso.
    ============================================================ */
 
 window.UI = (function () {
 
   /* ---- Toast ---- */
+  /**
+   * Muestra una notificación flotante (toast) en la esquina superior derecha.
+   * Se apila verticalmente si hay múltiples toasts activos.
+   * Se auto-destruye después de `duration` milisegundos con animación.
+   * @param {string} message   - Mensaje a mostrar
+   * @param {'success'|'error'|'warning'|'info'} [type='info'] - Tipo de notificación
+   * @param {number} [duration=4000] - Milisegundos antes de desaparecer
+   */
   function showToast(message, type, duration) {
     type     = type     || 'info';
     duration = duration || 4000;
@@ -50,6 +65,11 @@ window.UI = (function () {
   }
 
   /* ---- Modals ---- */
+  /**
+   * Abre un modal agregando la clase 'open' y bloqueando el scroll del body.
+   * Adjunta un listener para cerrar si se hace clic en el backdrop (fuera del contenido).
+   * @param {string} modalId - ID del elemento .modal-backdrop
+   */
   function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (!modal) return;
@@ -62,6 +82,10 @@ window.UI = (function () {
     });
   }
 
+  /**
+   * Cierra un modal quitando la clase 'open' y restaurando el scroll del body.
+   * @param {string} modalId - ID del elemento .modal-backdrop
+   */
   function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (!modal) return;
@@ -70,6 +94,7 @@ window.UI = (function () {
     document.body.style.overflow = '';
   }
 
+  /** Cierra todos los modales abiertos en la página. */
   function closeAllModals() {
     document.querySelectorAll('.modal-backdrop.open').forEach(function (modal) {
       modal.classList.remove('open');
@@ -78,6 +103,12 @@ window.UI = (function () {
   }
 
   /* ---- Status Badge ---- */
+  /**
+   * Genera el HTML de un badge de estado con la clase CSS y el texto en español correctos.
+   * Si el estado no está en el mapa, usa 'badge-pending' como fallback.
+   * @param {string} status - Código de estado (ej. 'pending', 'completed', 'rejected')
+   * @returns {string} HTML del badge
+   */
   function renderStatusBadge(status) {
     const map = {
       pending:    { class: 'badge-pending',   label: 'Pendiente' },
@@ -94,6 +125,13 @@ window.UI = (function () {
   }
 
   /* ---- Tables ---- */
+  /**
+   * Renderiza encabezados y cuerpo completo de una tabla a partir de datos y columnas.
+   * Crea <thead> y <tbody> si no existen en el DOM.
+   * @param {string} tableId  - ID del elemento <table>
+   * @param {Array} data      - Array de objetos de datos
+   * @param {Array<{key:string, label:string, render?:Function}>} columns - Definición de columnas
+   */
   function renderTable(tableId, data, columns) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -113,6 +151,14 @@ window.UI = (function () {
     renderTableBody(tableId, data, columns);
   }
 
+  /**
+   * Actualiza solo el cuerpo (<tbody>) de una tabla existente.
+   * Más eficiente que renderTable cuando los encabezados no cambian.
+   * Muestra un estado vacío si no hay datos.
+   * @param {string} tableId  - ID del elemento <table>
+   * @param {Array} data      - Array de objetos de datos
+   * @param {Array} columns   - Definición de columnas (igual que renderTable)
+   */
   function renderTableBody(tableId, data, columns) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -145,6 +191,13 @@ window.UI = (function () {
     }).join('');
   }
 
+  /**
+   * Filtra filas visibles de una tabla mostrando/ocultando según texto de búsqueda.
+   * Busca en el textContent completo de cada fila (todas las columnas).
+   * @param {string} tableId    - ID del elemento <table>
+   * @param {string} searchTerm - Texto a buscar (case-insensitive)
+   * @returns {number} Cantidad de filas visibles después del filtro
+   */
   function filterTable(tableId, searchTerm) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -163,6 +216,12 @@ window.UI = (function () {
     return visible;
   }
 
+  /**
+   * Ordena las filas de una tabla por una columna. Detecta si los valores son numéricos.
+   * @param {string} tableId      - ID del elemento <table>
+   * @param {number} columnIndex  - Índice de la columna a ordenar (0-based)
+   * @param {boolean} asc         - true para ascendente, false para descendente
+   */
   function sortTable(tableId, columnIndex, asc) {
     const table = document.getElementById(tableId);
     if (!table) return;
@@ -188,6 +247,16 @@ window.UI = (function () {
   }
 
   /* ---- Pagination ---- */
+  /**
+   * Genera controles de paginación con botones de página, anterior/siguiente e info.
+   * El callback se serializa con .toString() porque se inyecta en onclick HTML.
+   * Muestra "..." para saltos grandes entre páginas.
+   * @param {string} containerId  - ID del contenedor donde insertar la paginación
+   * @param {number} total        - Total de elementos
+   * @param {number} current      - Página actual (1-based)
+   * @param {number} perPage      - Elementos por página
+   * @param {string} callback     - Función serializada que recibe el número de página
+   */
   function renderPagination(containerId, total, current, perPage, callback) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -221,6 +290,11 @@ window.UI = (function () {
   }
 
   /* ---- Dropdowns ---- */
+  /**
+   * Inicializa todos los dropdowns de la página con atributo [data-dropdown-toggle].
+   * Cierra cualquier dropdown abierto al hacer clic fuera de él.
+   * Debe llamarse una vez por página (main.js lo hace en DOMContentLoaded).
+   */
   function initDropdowns() {
     document.addEventListener('click', function (e) {
       document.querySelectorAll('.dropdown-menu.open').forEach(function (menu) {
@@ -241,6 +315,13 @@ window.UI = (function () {
   }
 
   /* ---- Date Formatter ---- */
+  /**
+   * Formatea una fecha ISO/string a texto legible en español mexicano.
+   * Devuelve el string original si no puede parsearlo.
+   * @param {string} dateString - Fecha en formato ISO, YYYY-MM-DD, etc.
+   * @param {string} [locale='es-MX'] - Locale para el formato
+   * @returns {string} Fecha formateada (ej. 'nov. 15, 2024')
+   */
   function formatDate(dateString, locale) {
     locale = locale || 'es-MX';
     try {
@@ -253,6 +334,17 @@ window.UI = (function () {
   }
 
   /* ---- Confirm Dialog ---- */
+  /**
+   * Muestra un modal de confirmación completamente dinámico (creado en el DOM).
+   * Se destruye automáticamente al cerrarse (no persiste en el HTML).
+   * @param {string} message        - Pregunta o descripción de la acción a confirmar
+   * @param {Function} onConfirm    - Callback ejecutado si el usuario confirma
+   * @param {Object} [options]
+   * @param {string}  [options.title='Confirmar acción']  - Título del modal
+   * @param {boolean} [options.danger=false]              - true para botón rojo de confirmación
+   * @param {string}  [options.confirmText='Confirmar']   - Texto del botón de confirmación
+   * @param {string}  [options.cancelText='Cancelar']     - Texto del botón de cancelación
+   */
   function confirm(message, onConfirm, options) {
     options = options || {};
     const modalId = 'confirm-modal-' + Date.now();

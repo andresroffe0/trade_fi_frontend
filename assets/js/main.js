@@ -1,5 +1,20 @@
 /* ============================================================
    TradeFi - Main Application Module
+   ============================================================
+   Propósito: Punto de entrada de la lógica de la aplicación.
+   Se carga en TODAS las páginas protegidas (todas excepto login/index).
+
+   Responsabilidades:
+   1. Verificar sesión activa (redirige a login si no hay sesión)
+   2. Inicializar componentes compartidos: sidebar, navbar, dropdowns
+   3. Delegar la lógica específica a la función init de cada página
+
+   Patrón: IIFE para evitar contaminar el scope global.
+   Solo se exponen en window las funciones que son invocadas desde
+   onclick en HTML generado dinámicamente (_viewOperation, _viewCredit,
+   _deleteDocument, logout).
+
+   Ver docs/ARCHITECTURE.md §4.5 y §6 para detalles de cada página.
    ============================================================ */
 
 (function () {

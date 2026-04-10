@@ -1,5 +1,13 @@
 /* ============================================================
    TradeFi - Mock Data Module
+   ============================================================
+   Propósito: Única fuente de verdad de todos los datos de la app.
+   Cuando se integre un back-end real, SOLO este archivo debe cambiar.
+
+   Patrón: IIFE que expone un objeto público. Las constantes internas
+   son privadas (no accesibles desde la consola del navegador).
+
+   Ver docs/ARCHITECTURE.md §4.1 para detalles de estructura de datos.
    ============================================================ */
 
 window.MockData = (function () {
@@ -257,6 +265,9 @@ window.MockData = (function () {
   };
 
   const exchangeRates = {
+    // Tasas respecto al USD (USD = 1).
+    // Para convertir A→B: resultado = monto * (rates[B] / rates[A])
+    // Actualizar estos valores cuando se integre una API de divisas real.
     USD: 1,
     EUR: 0.9218,
     GBP: 0.7891,

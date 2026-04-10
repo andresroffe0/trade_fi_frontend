@@ -95,3 +95,13 @@ Page-specific logic lives in `main.js`, dispatched by pathname.
 
 CSS custom properties are defined in `style.css` `:root`. Change colors, spacing, and shadow variables there to restyle the entire app.
 
+## 📖 Documentation
+
+For a deep-dive into the architecture, design decisions, data structures, and step-by-step guides for making changes, see **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+
+It covers:
+- Why each file exists and what it's responsible for
+- The data flow from mock data to rendered UI
+- JSDoc for every public function
+- How to add a new page, connect a real API, change the design, and more
+
