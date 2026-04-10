@@ -198,7 +198,7 @@
       var raw  = localStorage.getItem('tradefi_user');
       var user = raw ? JSON.parse(raw) : MockData.currentUser;
       var firstName = (user.name || 'Usuario').split(' ')[0];
-      greetingEl.textContent = greeting + ', ' + firstName + ' 👋';
+      greetingEl.textContent = greeting + ', ' + firstName;
     }
   }
 
