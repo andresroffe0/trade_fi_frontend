@@ -355,16 +355,16 @@
 
     tbody.innerHTML = data.map(function (op) {
       return `<tr>
-        <td><span class="td-reference">${op.reference}</span></td>
-        <td>${op.destinationCountry}</td>
-        <td><span style="font-weight:600;">${op.currency}</span></td>
-        <td style="font-weight:600;">${Calculator.formatCurrency(op.amount, op.currency)}</td>
-        <td><span class="badge ${op.method === 'WIRE' ? 'badge-processing' : 'badge-approved'}" style="font-size:10px;">${op.method}</span></td>
+        <td><span class="td-reference">${escapeHtml(op.reference)}</span></td>
+        <td>${escapeHtml(op.destinationCountry)}</td>
+        <td><span style="font-weight:600;">${escapeHtml(op.currency)}</span></td>
+        <td style="font-weight:600;">${escapeHtml(Calculator.formatCurrency(op.amount, op.currency))}</td>
+        <td><span class="badge ${op.method === 'WIRE' ? 'badge-processing' : 'badge-approved'}" style="font-size:10px;">${escapeHtml(op.method)}</span></td>
         <td>${UI.renderStatusBadge(op.status)}</td>
-        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${UI.formatDate(op.createdAt)}</td>
+        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${escapeHtml(UI.formatDate(op.createdAt))}</td>
         <td>
           <div class="table-actions">
-            <button class="table-action-btn" title="Ver detalle" onclick="window._viewOperation('${op.id}')">
+            <button class="table-action-btn" title="Ver detalle" onclick="window._viewOperation('${escapeHtml(op.id)}')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
@@ -518,15 +518,15 @@
     tbody.innerHTML = data.map(function (cr) {
       var nextPmt = cr.nextPaymentDate ? UI.formatDate(cr.nextPaymentDate) : '—';
       return `<tr>
-        <td><span class="td-reference">${cr.reference}</span></td>
-        <td style="font-weight:600;">${Calculator.formatCurrency(cr.amount, cr.currency)}</td>
-        <td style="color:var(--text-secondary);">${cr.loanTerm} meses</td>
-        <td style="color:var(--text-secondary);">${cr.interestRate}%</td>
-        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${nextPmt}</td>
+        <td><span class="td-reference">${escapeHtml(cr.reference)}</span></td>
+        <td style="font-weight:600;">${escapeHtml(Calculator.formatCurrency(cr.amount, cr.currency))}</td>
+        <td style="color:var(--text-secondary);">${escapeHtml(String(cr.loanTerm))} meses</td>
+        <td style="color:var(--text-secondary);">${escapeHtml(String(cr.interestRate))}%</td>
+        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${escapeHtml(nextPmt)}</td>
         <td>${UI.renderStatusBadge(cr.status)}</td>
         <td>
           <div class="table-actions">
-            <button class="table-action-btn" title="Ver detalle" onclick="window._viewCredit('${cr.id}')">
+            <button class="table-action-btn" title="Ver detalle" onclick="window._viewCredit('${escapeHtml(cr.id)}')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
@@ -565,12 +565,12 @@
     var schedule = Calculator.generateAmortizationSchedule(cr.amount, cr.loanTerm, cr.interestRate);
     tbody.innerHTML = schedule.map(function (row) {
       return `<tr>
-        <td style="font-weight:600;color:var(--primary);">${row.month}</td>
-        <td style="color:var(--text-secondary);font-size:11px;">${row.date}</td>
-        <td style="font-weight:600;">${Calculator.formatCurrency(row.payment, cr.currency)}</td>
-        <td>${Calculator.formatCurrency(row.principal, cr.currency)}</td>
-        <td style="color:var(--accent);">${Calculator.formatCurrency(row.interest, cr.currency)}</td>
-        <td style="color:var(--text-secondary);">${Calculator.formatCurrency(row.balance, cr.currency)}</td>
+        <td style="font-weight:600;color:var(--primary);">${escapeHtml(String(row.month))}</td>
+        <td style="color:var(--text-secondary);font-size:11px;">${escapeHtml(row.date)}</td>
+        <td style="font-weight:600;">${escapeHtml(Calculator.formatCurrency(row.payment, cr.currency))}</td>
+        <td>${escapeHtml(Calculator.formatCurrency(row.principal, cr.currency))}</td>
+        <td style="color:var(--accent);">${escapeHtml(Calculator.formatCurrency(row.interest, cr.currency))}</td>
+        <td style="color:var(--text-secondary);">${escapeHtml(Calculator.formatCurrency(row.balance, cr.currency))}</td>
       </tr>`;
     }).join('');
   }
@@ -676,20 +676,20 @@
       return `<tr>
         <td>
           <div style="display:flex;align-items:center;gap:10px;">
-            <div class="doc-icon ${iconClass}">${iconLabel}</div>
-            <span style="font-size:var(--font-size-sm);font-weight:500;">${doc.name}</span>
+            <div class="doc-icon ${iconClass}">${escapeHtml(iconLabel)}</div>
+            <span style="font-size:var(--font-size-sm);font-weight:500;">${escapeHtml(doc.name)}</span>
           </div>
         </td>
-        <td style="color:var(--text-secondary);">${doc.type}</td>
+        <td style="color:var(--text-secondary);">${escapeHtml(doc.type)}</td>
         <td>${UI.renderStatusBadge(doc.status)}</td>
-        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${UI.formatDate(doc.uploadDate)}</td>
-        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${doc.size}</td>
+        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${escapeHtml(UI.formatDate(doc.uploadDate))}</td>
+        <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${escapeHtml(doc.size)}</td>
         <td>
           <div class="table-actions">
             <button class="table-action-btn" title="Descargar" onclick="window.UI.showToast('Descarga iniciada', 'info')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </button>
-            <button class="table-action-btn danger" title="Eliminar" onclick="window._deleteDocument('${doc.id}')">
+            <button class="table-action-btn danger" title="Eliminar" onclick="window._deleteDocument('${escapeHtml(doc.id)}')">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
             </button>
           </div>
@@ -785,11 +785,11 @@
         var amt = Calculator.formatCurrency(Math.abs(txn.amount), txn.currency);
         var sign = txn.amount < 0 ? '-' : '+';
         return `<tr>
-          <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${UI.formatDate(txn.date)}</td>
-          <td><span class="td-reference">${txn.reference}</span></td>
-          <td style="color:var(--text-secondary);">${txn.type}</td>
-          <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-secondary);">${txn.description}</td>
-          <td style="font-weight:600;color:${txn.amount < 0 ? 'var(--error)' : 'var(--success)'};">${sign}${amt}</td>
+          <td style="color:var(--text-secondary);font-size:var(--font-size-xs);">${escapeHtml(UI.formatDate(txn.date))}</td>
+          <td><span class="td-reference">${escapeHtml(txn.reference)}</span></td>
+          <td style="color:var(--text-secondary);">${escapeHtml(txn.type)}</td>
+          <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-secondary);">${escapeHtml(txn.description)}</td>
+          <td style="font-weight:600;color:${txn.amount < 0 ? 'var(--error)' : 'var(--success)'};">${escapeHtml(sign + amt)}</td>
           <td>${UI.renderStatusBadge(txn.status)}</td>
         </tr>`;
       }).join('');
@@ -892,7 +892,10 @@
     if (regenBtn) {
       regenBtn.addEventListener('click', function () {
         UI.confirm('¿Generar una nueva API key? La clave actual dejará de funcionar inmediatamente.', function () {
-          var newKey = 'tf_live_sk_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 8);
+          var array = new Uint8Array(20);
+          window.crypto.getRandomValues(array);
+          var hex = Array.from(array).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+          var newKey = 'tf_live_sk_' + hex;
           user.apiKey = newKey;
           localStorage.setItem('tradefi_user', JSON.stringify(user));
           if (apiKeyEl) apiKeyEl.textContent = newKey.replace(/(?<=.{12}).+(?=.{4})/, '••••••••••');
@@ -905,6 +908,16 @@
   /* ===========================================================
      HELPERS
      =========================================================== */
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;');
+  }
+
   function setText(id, value) {
     var el = document.getElementById(id);
     if (el) el.textContent = value;
@@ -944,16 +957,21 @@
     var size = file.size > 1024 * 1024 ? (file.size / (1024 * 1024)).toFixed(1) + ' MB' : (file.size / 1024).toFixed(0) + ' KB';
     preview.dataset.filename = file.name;
     preview.dataset.filesize = size;
+
+    var safeName = escapeHtml(file.name);
+    var safeSize = escapeHtml(size);
+    var safeId   = escapeHtml(previewId);
+
     preview.innerHTML = `
       <div class="uploaded-file">
         <div class="uploaded-file-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         </div>
         <div class="uploaded-file-info">
-          <div class="uploaded-file-name">${file.name}</div>
-          <div class="uploaded-file-size">${size}</div>
+          <div class="uploaded-file-name">${safeName}</div>
+          <div class="uploaded-file-size">${safeSize}</div>
         </div>
-        <button type="button" class="table-action-btn danger" onclick="document.getElementById('${previewId}').innerHTML='';document.getElementById('${previewId}').removeAttribute('data-filename');">
+        <button type="button" class="table-action-btn danger" onclick="document.getElementById('${safeId}').innerHTML='';document.getElementById('${safeId}').removeAttribute('data-filename');">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>`;
